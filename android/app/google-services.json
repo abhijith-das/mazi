@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "1081411997191",
-    "project_id": "mazi-a3e98",
-    "storage_bucket": "mazi-a3e98.appspot.com"
+    "project_number": "81262411083",
+    "project_id": "mazi-7e0c5",
+    "storage_bucket": "mazi-7e0c5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1081411997191:android:b4e73fea007e8c579be4a2",
+        "mobilesdk_app_id": "1:81262411083:android:53fe0982d00c9985fcfcce",
         "android_client_info": {
           "package_name": "com.example.mazi"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1081411997191-eavcjlf2v87dqhtmettp0gnr13iu21la.apps.googleusercontent.com",
+          "client_id": "81262411083-c1t9tjlnspg7h8hpth2jg3m9roi8pg0l.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.mazi",
-            "certificate_hash": "d0a05abbdb49b54fdca944f73ab1d3ff999f9f80"
+            "certificate_hash": "88806b90e451c8599f03015ce83c503a78237f48"
           }
         },
         {
-          "client_id": "1081411997191-g1somtlfieo4gd3n494pcnc9ipc96ga1.apps.googleusercontent.com",
+          "client_id": "81262411083-b2o5m9mln88a91d52hp7svh4mmvle9st.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD4HQvQlYeuxaLUP9xEOy4b3PtY_ojgToM"
+          "current_key": "AIzaSyCNkMgtlr-Bmp9HLJDkHMLmh5dyh5UchtA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1081411997191-g1somtlfieo4gd3n494pcnc9ipc96ga1.apps.googleusercontent.com",
+              "client_id": "81262411083-b2o5m9mln88a91d52hp7svh4mmvle9st.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

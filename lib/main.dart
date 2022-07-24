@@ -23,46 +23,34 @@ import 'Profile.dart';
 import 'Group.dart';
 import 'Voice.dart';
 import 'melcowe.dart';
-
+import 'savedloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-   runApp(MyApp());
-   }
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Mazi',
-      theme: ThemeData(
-        primaryColor: Colors.black
-      ),
+      theme: ThemeData(primaryColor: Colors.black),
       debugShowCheckedModeBanner: false,
-      home: 
-    
-      HomePage(),
-
-      routes: <String,WidgetBuilder>{
-
-        "Login" : (BuildContext context)=>Login(),
-        "SignUp":(BuildContext context)=>SignUp(),
-        "start":(BuildContext context)=>Start(),
-        "HomePage":(BuildContext context)=>HomePage(),
-        "Profile":(BuildContext context)=>ProfilePage(),
-        "Voice":(BuildContext context)=>SpeechScreen(),
-        "Group":(BuildContext context)=>GroupPage(),
-        "CreateGrp":(BuildContext context)=>CreateGrpPage(),
-        "welcome":(BuildContext context)=>Welcome(),
+      home: HomePage(),
+      routes: <String, WidgetBuilder>{
+        "Login": (BuildContext context) => Login(),
+        "SignUp": (BuildContext context) => SignUp(),
+        "start": (BuildContext context) => Start(),
+        "HomePage": (BuildContext context) => HomePage(),
+        "Profile": (BuildContext context) => ProfilePage(),
+        "Voice": (BuildContext context) => SpeechScreen(),
+        "Group": (BuildContext context) => GroupPage(),
+        "CreateGrp": (BuildContext context) => CreateGrpPage(),
+        "welcome": (BuildContext context) => Welcome(),
+        'loc': (BuildContext context) => LocPage(),
       },
-      
     );
   }
-  
-  
-
 }
-
-

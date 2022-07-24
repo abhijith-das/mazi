@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:math';
-
-FirebaseFirestore dbu = FirebaseFirestore.instance;
-FirebaseFirestore dba = FirebaseFirestore.instance;
 
 class Userget {
-  late String Name, Phoneno, Gid, Uid, age;
+  late String Name, Phoneno, Gid, Uid;
+  late int age;
   late double lat, long;
 
   Userget(
@@ -26,7 +23,7 @@ class Userget {
         Gid: json['gid'],
         age: json['age'],
         Phoneno: json['phno'],
-        lat: json['lan'],
+        lat: json['lat'],
         long: json['long']);
   }
 
@@ -58,24 +55,12 @@ class Userget {
   }
 }
 
-class todoget {
-  late String textt;
-  todoget({required this.textt});
-  factory todoget.fromJson(Map<String, dynamic> json) {
-    return todoget(textt: json['task']);
-  }
-
-  String gettext(todoget element) {
-    return element.textt;
-  }
-}
-
-class TaskPage extends StatefulWidget {
+class LocPage extends StatefulWidget {
   @override
-  _Task createState() => _Task();
+  _Loc createState() => _Loc();
 }
 
-class _Task extends State<TaskPage> {
+class _Loc extends State<LocPage> {
   final List<String> tasks = <String>['t1'];
   String str = '';
   String blank = '';
@@ -113,11 +98,12 @@ class _Task extends State<TaskPage> {
   Future<void> submit() async {
     Navigator.of(context).pop(controller?.text);
     //tasks.add(str);
-    str = controller!.text;
+    String? str = controller?.text;
     controller?.text = blank;
-    //String gid = getgrpofuser();
-    // String addr = "Group/" + gid + "/to_do";
-
+    String gid = getgrpofuser();
+    String addr = "Group/" + gid + "/to_do";
+    CollectionReference _todo = FirebaseFirestore.instance.collection(addr);
+    await _todo.add({"Text": str});
     //print(str);
   }
 
@@ -138,7 +124,7 @@ class _Task extends State<TaskPage> {
             final str = await openDialogue();
             if (str == null || str.isEmpty) return;
             tasks.add(str);
-            addto(str);
+
             setState(() {
               //refresh ui
             });
@@ -158,7 +144,7 @@ class _Task extends State<TaskPage> {
         ),
         appBar: AppBar(
           title: Text(
-            'Todos',
+            'Saved Locations',
             style: TextStyle(
               fontSize: 30,
             ),
@@ -185,7 +171,7 @@ class _Task extends State<TaskPage> {
                               child: Container(
                             child: Row(children: <Widget>[
                               Icon(
-                                Icons.arrow_circle_right,
+                                Icons.location_pin,
                                 color: Colors.white,
                               ),
                               SizedBox(
@@ -201,10 +187,7 @@ class _Task extends State<TaskPage> {
                                   child: Align(
                                     alignment: Alignment.topRight,
                                     child: IconButton(
-                                        onPressed: () {
-                                          deletetask(index);
-                                          setState(() {});
-                                        },
+                                        onPressed: deletetask,
                                         icon: Icon(Icons.delete,
                                             color: Colors.white)),
                                   )),
@@ -215,66 +198,7 @@ class _Task extends State<TaskPage> {
             }));
   }
 
-  void deletetask(int index) {
-    User? firebaseUser;
-    firebaseUser = _auth.currentUser;
-    String id = firebaseUser!.uid;
-    late var gid;
-    print('---------------------------------------------');
-    print(str);
-    print('---------------------------------------------');
-    print(id);
-
-    final docRef = dba.collection("Users").doc(id);
-    docRef.get().then((DocumentSnapshot doc) async {
-      final data = doc.data() as Map<String, dynamic>;
-      gid = data["gid"];
-
-      print('---------------------------------------------');
-      print(gid);
-
-      String k = tasks[index];
-       String addr = "/Groups/" + gid + "/SavedLocation";
-       //var doc_ref = await FirebaseFirestore.instance.collection("board").where('text',isEqualTo: k).get();
-//doc_ref.documents.forEach((result) {
-  //print(result.documentID);
-});
-
-
-
-   // });
-  }
-
-  void addto(String str) async {
-    User? firebaseUser;
-    firebaseUser = _auth.currentUser;
-    String id = firebaseUser!.uid;
-    late var gid;
-    print('---------------------------------------------');
-    print(str);
-    print('---------------------------------------------');
-    print(id);
-
-    final docRef = dba.collection("Users").doc(id);
-    docRef.get().then((DocumentSnapshot doc) {
-      final data = doc.data() as Map<String, dynamic>;
-      gid = data["gid"];
-
-      print('---------------------------------------------');
-      print(gid);
-      String taskid = getcode4();
-      final addDoc = <String, dynamic>{"text": str};
-      dbu
-          .collection("Groups")
-          .doc(gid)
-          .collection("to_do")
-          .doc(taskid)
-          .set(addDoc);
-    });
-  }
-
-  Future<void> clear() async {
-    tasks.removeRange(0, tasks.length);
+  getgrpofuser() async {
     User? firebaseUser;
     firebaseUser = _auth.currentUser;
     String id = firebaseUser!.uid;
@@ -288,22 +212,10 @@ class _Task extends State<TaskPage> {
     list1.forEach((element) {
       gid = element.getgid(element);
     });
-    String addr = "/Groups/" + gid + "/To_do";
-
-    final list2 = await FirebaseFirestore.instance.collection(addr).get();
-    List<todoget> list3 =
-        list2.docs.map((d) => todoget.fromJson(d.data())).toList();
-    list3.forEach((element) {
-      tasks.add(element.gettext(element));
-    });
+    return gid;
   }
-}
 
-getcode4() {
-  const _chars =
-      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-  Random _rnd = Random();
-  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
-      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
-  return getRandomString(4);
+  void deletetask() {
+    String gid = getgrpofuser();
+  }
 }
